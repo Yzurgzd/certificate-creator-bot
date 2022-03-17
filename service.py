@@ -111,7 +111,7 @@ def to_pdf() -> None:
         'enable-local-file-access': None,
         'page-size': 'A4',
         'orientation': 'Portrait',
-        'zoom': '0.5',
+        'zoom': 0.399,
         'margin-top': '0',
         'margin-right': '0',
         'margin-bottom': '0',
