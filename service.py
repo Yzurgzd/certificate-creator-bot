@@ -3,6 +3,9 @@ import zipfile
 import io
 import shutil
 import os
+import sys
+import subprocess
+import platform
 import pdfkit
 import codecs
 from jinja2 import Environment, FileSystemLoader
@@ -94,6 +97,15 @@ def render_html(template_name, subtitle, date, names) -> None:
 
 
 def to_pdf() -> None:
+    if platform.system() == "Windows":
+        pdfkit_config = pdfkit.configuration(wkhtmltopdf=os.environ.get(
+            'WKHTMLTOPDF_BINARY', 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'))
+    else:
+        os.environ['PATH'] += os.pathsep + os.path.dirname(sys.executable)
+        WKHTMLTOPDF_CMD = subprocess.Popen(['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf-pack')],
+                                           stdout=subprocess.PIPE).communicate()[0].strip()
+        pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
+
     Path('templates/certificate').mkdir(parents=True, exist_ok=True)
     options = {
         'enable-local-file-access': None,
@@ -111,6 +123,7 @@ def to_pdf() -> None:
         pdfkit.from_file(
             f'templates/html/{filename}',
             f'templates/certificate/{Path(filename).stem}.pdf',
+            configuration=pdfkit_config,
             options=options
         )
         os.remove(f'templates/html/{filename}')
