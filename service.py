@@ -95,8 +95,6 @@ def render_html(template_name, subtitle, date, names) -> None:
 
 def to_pdf() -> None:
     Path('templates/certificate').mkdir(parents=True, exist_ok=True)
-    conf = pdfkit.configuration(
-        wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
     options = {
         'enable-local-file-access': None,
         'page-size': 'A4',
@@ -113,7 +111,6 @@ def to_pdf() -> None:
         pdfkit.from_file(
             f'templates/html/{filename}',
             f'templates/certificate/{Path(filename).stem}.pdf',
-            configuration=conf,
             options=options
         )
         os.remove(f'templates/html/{filename}')
