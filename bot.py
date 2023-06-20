@@ -17,7 +17,7 @@ from service import (
     put_publish
 )
 
-TOKEN = "5130553419:AAGcyHPnVQttH455hl5BtG5YoW7W42rD-3k"
+TOKEN = ""
 
 USERS_ID = ["1691246843", "895060026"]
 
